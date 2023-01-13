@@ -6,6 +6,7 @@
 using namespace std;
 
 extern bool debugger;
+extern bool debugger1;
 
 class AVLTree
 {
@@ -21,13 +22,13 @@ class AVLTree
         Node* left;
     };
 
-    AVLTree() : root(nullptr) {}
+    AVLTree() : _root(nullptr) {}
     ~AVLTree();
-    Node* root;
+    Node* _root;
     void clear(Node* root);
     void print(Node* root, bool ch = false);
 
-    void insert(int key) { root = insert(root, key); }
+    void insert(int key) { _root = insert(_root, key); }
 
     Node* insert(Node* node, int key)
     {
@@ -49,9 +50,9 @@ class AVLTree
         node->height = 1 + maxHeight(node->left, node->right);
         if(debugger)
             cout << "curernt" << endl;
-        int test = updateAllHeights(root);
+        int test = updateAllHeights(_root);
         if(debugger)
-            print(root);
+            print(_root);
 
         // STEP 3
         // Check Balances
@@ -192,9 +193,119 @@ class AVLTree
         // return the difference
         return l - r;
     }
+
+    void remove(int key) { _root = remove(_root, key); }
+
+    Node* minVal(Node* root)
+    {
+        Node* cur = root;
+        while(cur->left) cur = cur->left;
+
+        return cur;
+    }
+
+    Node* remove(Node* node, int key)
+    {
+        cout << "";
+
+        if(node == nullptr)
+            return node;
+
+        // Traverse left/right
+        if(key < node->key)
+            node->left = remove(node->left, key);
+
+        else if(key > node->key)
+            node->right = remove(node->right, key);
+
+        else
+        {
+            if(!node->left || !node->right)
+            {
+                Node* temp;
+                if(node->left)
+                    temp = node->left;
+                else if(node->right)
+                    temp = node->right;
+
+                if(!temp)
+                {
+                    temp = node;
+                    node = nullptr;
+                }
+                else
+                    *node = *temp;
+
+                // free(temp);
+            }
+            else
+            {
+                Node* temp = minVal(node->right);
+                node->key = temp->key;
+                node->right = remove(node->right, temp->key);
+            }
+        }
+
+        if(node == nullptr)
+            return node;
+
+        // STEP 2
+        // Update Heights
+        node->height = 1 + maxHeight(node->left, node->right);
+        if(debugger1)
+            cout << "curernt" << endl;
+        int test = updateAllHeights(_root);
+        if(debugger1)
+            print(node);
+
+        // STEP 3
+        // Check Balances
+        int bf = balanceFactor(node);
+        if(debugger1)
+            if(node)
+                cout << "BF =  " << bf << '\t' << " NODE " << node->key << '\t' << key << endl;
+
+        // STEP 4
+        // ROTATE if needed
+        if(bf > 1 || bf < -1)
+        {
+            if(debugger1)
+                cout << "choosing case" << endl;
+            if(bf > 1 && balanceFactor(node->left) >= 0)
+            {
+                if(debugger1)
+                    cout << "========CASE1=========" << endl;
+                return rightRotate(node);
+            }
+
+            if(bf > 1 && balanceFactor(node->left) < 0)
+            {
+                if(debugger1)
+                    cout << "========CASE2=========" << endl;
+                node->left = leftRotate(node->left);
+                return rightRotate(node);
+            }
+
+            if(bf < -1 && balanceFactor(node->right) <= 0)
+            {
+                if(debugger1)
+                    cout << "========CASE3=========" << endl;
+                return leftRotate(node);
+            }
+
+            if(bf < -1 && balanceFactor(node->right) > 0)
+            {
+                if(debugger1)
+                    cout << "========CASE4=========" << endl;
+                node->right = rightRotate(node->right);
+                return leftRotate(node);
+            }
+        }
+        return node;
+    }
 };
 
-AVLTree::~AVLTree() { clear(root); }
+AVLTree::~AVLTree() { clear(_root); }
 
 void AVLTree::clear(Node* root)
 {
