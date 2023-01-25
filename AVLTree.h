@@ -19,12 +19,26 @@ class AVLTree
     AVLTree() : _root(nullptr) {}
     ~AVLTree();
 
+    // deletes all the nodes of a tree
     void clear(Node* root);
-    void print(Node* root, bool ch = false);
 
+    // adds a node with value 'key' to the tree
     void insert(int key) { _root = insert(_root, key); }
+
+    // deletes the node with value 'key' from the tree
     void remove(int key) { _root = remove(_root, key); }
+
+    // returns the balance factor of a given node
+    int static balanceFactor(Node* cur);
+
+    // safely returns the root of the tree
     Node* returnRoot() { return _root; }
+
+    // does a right rotation of a given node
+    Node* rightRotate(Node* y);
+
+    // does a left rotation of a given node
+    Node* leftRotate(Node* x);
 
     Node* insert(Node* node, int key)
     {
@@ -195,44 +209,41 @@ class AVLTree
         }
         return node;
     }
-
-    Node* rightRotate(Node* y)
-    {
-        // definitions
-        Node* x = y->left;
-        Node* t2 = x->right;
-
-        // rotations
-        x->right = y;
-        y->left = t2;
-
-        // updates
-        y->height = 1 + maxHeight(y->left, y->right);
-        x->height = 1 + maxHeight(x->left, x->right);
-
-        return x;
-    }
-
-    Node* leftRotate(Node* x)
-    {
-        // definitions
-        Node* y = x->right;
-        Node* t2 = y->left;
-
-        // rotations
-        y->left = x;
-        x->right = t2;
-
-        // updates
-        y->height = 1 + maxHeight(y->left, y->right);
-        x->height = 1 + maxHeight(x->left, x->right);
-
-        return y;
-    }
-
-    // returns the balance factor of a given node
-    int static balanceFactor(Node* cur);
 };
+
+Node* AVLTree::rightRotate(Node* y)
+{
+    // definitions
+    Node* x = y->left;
+    Node* t2 = x->right;
+
+    // rotations
+    x->right = y;
+    y->left = t2;
+
+    // updates
+    y->height = 1 + maxHeight(y->left, y->right);
+    x->height = 1 + maxHeight(x->left, x->right);
+
+    return x;
+}
+
+Node* AVLTree::leftRotate(Node* x)
+{
+    // definitions
+    Node* y = x->right;
+    Node* t2 = y->left;
+
+    // rotations
+    y->left = x;
+    x->right = t2;
+
+    // updates
+    y->height = 1 + maxHeight(y->left, y->right);
+    x->height = 1 + maxHeight(x->left, x->right);
+
+    return y;
+}
 
 int AVLTree::balanceFactor(Node* cur)
 {
@@ -256,7 +267,6 @@ int AVLTree::balanceFactor(Node* cur)
     return l - r;
 }
 
-// deletes the tree from the memory
 AVLTree::~AVLTree() { clear(_root); }
 
 void AVLTree::clear(Node* root)
