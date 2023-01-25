@@ -187,6 +187,7 @@ class AVLTree
                 if(debugger1)
                     cout << "========CASE4=========" << endl;
                 node->right = rightRotate(node->right);
+
                 return leftRotate(node);
             }
         }
@@ -267,6 +268,7 @@ void AVLTree::clear(Node* root)
 // prints the tree 'in-order'
 void AVLTree::print(Node* root, bool ch)
 {
+    updateAllHeights(this->_root);
     if(ch == false)
     {
         cout << "Key" << '\t' << "L" << '\t' << "R" << '\t' << "BF" << '\t' << "H" << endl;
