@@ -3,6 +3,7 @@
 
 #include "AVLTree.h"
 #include "Viewer.h"
+
 void case1(AVLTree tree)
 {
     // CASE 1
@@ -14,13 +15,13 @@ void case1(AVLTree tree)
     tree.insert(25);
 
     cout << "TREE BUILDING STOPPED " << endl << endl;
-    tree.print(tree._root);
+    // print(tree.returnRoot());
 
     cout << endl << "DELETING " << endl;
     tree.remove(40);
     tree.remove(50);
     tree.remove(20);
-    tree.print(tree._root);
+    // tree.print(tree.returnRoot());
 }
 
 void case2(AVLTree tree)
@@ -38,7 +39,7 @@ void case2(AVLTree tree)
     tree.insert(90);
 
     cout << "TREE BUILDING STOPPED " << endl << endl;
-    tree.print(tree._root);
+    // tree.print(tree.returnRoot());
 }
 
 #endif  // CASES_H

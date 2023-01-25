@@ -6,45 +6,45 @@
 #include <vector>
 
 #include "AVLTree.h"
+#include "Viewer.h"
 
 class Controller
 {
+    Viewer* _view;
+    AVLTree* _tree;
+
    public:
-    void exec(AVLTree tree);
+    Controller(Viewer* view, AVLTree* tree)
+    {
+        _view = view;
+        _tree = tree;
+
+        exec();
+    }
+    void exec();
 };
 
-vector<string> inputCommand()
+void Controller::exec()
 {
-    cout << "Please, enter a command: ";
-    vector<string> res;
+    // using Viewer to recieve a command
+    vector<string> command = _view->inputCommand();
 
-    stringstream ss;
-    string s;
-    getline(cin, s);
-    ss << s;
-
-    string str;
-    while(getline(ss, str, ' ')) res.push_back(str.c_str());
-
-    return res;
-}
-
-void Controller::exec(AVLTree tree)
-{
-    vector<string> command = inputCommand();
-
+    // Controller does all the logic with the Model
     while(command[0] != "QUIT")
     {
         if(command[0] == "ADD")
-            tree.insert(stoi(command[1]));
+        {
+            _tree->insert(stoi(command[1]));
+        }
 
         else if(command[0] == "DEL")
         {
-            updateAllHeights(tree._root);
-            tree.remove(stoi(command[1]));
+            updateAllHeights(_tree->returnRoot());
+            _tree->remove(stoi(command[1]));
         }
-        else if(command[0] == "PRINT")
-            tree.print(tree._root);
+
+        //        else if(command[0] == "PRINT")
+        //            _view->print(_tree->returnRoot());
 
         else if(command[0] == "QUIT")
         {
@@ -56,7 +56,13 @@ void Controller::exec(AVLTree tree)
             cout << "Please, input a propper command." << endl;
         }
 
-        command = inputCommand();
+        // Viewer then outputs the tree
+        cout << endl;
+        _view->print(_tree->returnRoot());
+        cout << endl;
+
+        // ask Viewer for the next command
+        command = _view->inputCommand();
     }
 }
 

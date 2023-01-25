@@ -13,10 +13,9 @@ class Application
 
 void Application::run()
 {
-    Controller control;
     Viewer view;
     AVLTree tree;
-    control.exec(tree);
+    Controller control(&view, &tree);
 }
 
 #endif  // APPLICATION_H

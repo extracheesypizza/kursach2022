@@ -12,17 +12,19 @@ extern bool debugger1;
 
 class AVLTree
 {
+   private:
+    Node* _root;
+
    public:
     AVLTree() : _root(nullptr) {}
     ~AVLTree();
-
-    Node* _root;
 
     void clear(Node* root);
     void print(Node* root, bool ch = false);
 
     void insert(int key) { _root = insert(_root, key); }
     void remove(int key) { _root = remove(_root, key); }
+    Node* returnRoot() { return _root; }
 
     Node* insert(Node* node, int key)
     {
@@ -45,8 +47,8 @@ class AVLTree
         if(debugger)
             cout << "curernt" << endl;
         int test = updateAllHeights(_root);
-        if(debugger)
-            print(_root);
+        //        if(debugger)
+        //            print(_root);
 
         // check balances
         int bf = balanceFactor(node);
@@ -145,8 +147,8 @@ class AVLTree
         if(debugger1)
             cout << "curernt" << endl;
         int test = updateAllHeights(_root);
-        if(debugger1)
-            print(node);
+        //        if(debugger1)
+        //            print(node);
 
         // check balances
         int bf = balanceFactor(node);
@@ -229,28 +231,30 @@ class AVLTree
     }
 
     // returns the balance factor of a given node
-    int balanceFactor(Node* cur)
-    {
-        // if the node is root return 0
-        if(cur == nullptr)
-            return 0;
-
-        // get the heigths of left and right subtrees
-        int l, r;
-        if(cur->left == nullptr)
-            l = 0;
-        else
-            l = cur->left->height;
-
-        if(cur->right == nullptr)
-            r = 0;
-        else
-            r = cur->right->height;
-
-        // return the difference
-        return l - r;
-    }
+    int static balanceFactor(Node* cur);
 };
+
+int AVLTree::balanceFactor(Node* cur)
+{
+    // if the node is root return 0
+    if(cur == nullptr)
+        return 0;
+
+    // get the heigths of left and right subtrees
+    int l, r;
+    if(cur->left == nullptr)
+        l = 0;
+    else
+        l = cur->left->height;
+
+    if(cur->right == nullptr)
+        r = 0;
+    else
+        r = cur->right->height;
+
+    // return the difference
+    return l - r;
+}
 
 // deletes the tree from the memory
 AVLTree::~AVLTree() { clear(_root); }
@@ -263,34 +267,6 @@ void AVLTree::clear(Node* root)
         clear(root->right);
         delete root;
     }
-}
-
-// prints the tree 'in-order'
-void AVLTree::print(Node* root, bool ch)
-{
-    updateAllHeights(this->_root);
-    if(ch == false)
-    {
-        cout << "Key" << '\t' << "L" << '\t' << "R" << '\t' << "BF" << '\t' << "H" << endl;
-        ch = true;
-    }
-
-    if(root->left)
-        AVLTree::print(root->left, ch);
-
-    cout << root->key << '\t';
-    if(root->left)
-        cout << root->left->key;
-    cout << '\t';
-    if(root->right)
-        cout << root->right->key;
-    cout << '\t';
-    cout << balanceFactor(root);
-    cout << '\t';
-    cout << root->height << endl;
-
-    if(root->right)
-        AVLTree::print(root->right, ch);
 }
 
 #endif  // AVLTREE_H
