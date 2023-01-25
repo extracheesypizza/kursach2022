@@ -22,6 +22,9 @@ class Viewer
 
     // prints the tree 'in-order'
     void print(Node* root, bool ch = false);
+
+    // prints the How-to page
+    void printHelp();
 };
 
 vector<string> Viewer::inputCommand()
@@ -66,6 +69,15 @@ void Viewer::print(Node* root, bool ch)
 
     if(root->right)
         print(root->right, ch);
+}
+
+void Viewer::printHelp()
+{
+    cout << "==============================================" << endl;
+    cout << "'ADD X' -> Adds a node with value X to the tree;" << endl;
+    cout << "'DEL X' -> Removes the node with value X from the tree;" << endl;
+    cout << "'QUIT' -> Stop the Execution of the program;" << endl;
+    cout << "==============================================" << endl;
 }
 
 #endif  // VIEWER_H

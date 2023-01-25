@@ -19,6 +19,7 @@ class Controller
         _view = view;
         _tree = tree;
 
+        cout << "Type 'HELP' to get a How-to page;" << endl << endl;
         exec();
     }
     void exec();
@@ -33,35 +34,33 @@ void Controller::exec()
     while(command[0] != "QUIT")
     {
         if(command[0] == "ADD")
-        {
             _tree->insert(stoi(command[1]));
-        }
 
         else if(command[0] == "DEL")
-        {
-            updateAllHeights(_tree->returnRoot());
             _tree->remove(stoi(command[1]));
-        }
 
-        //        else if(command[0] == "PRINT")
-        //            _view->print(_tree->returnRoot());
+        else if(command[0] == "HELP")
+            _view->printHelp();
 
         else if(command[0] == "QUIT")
         {
             cout << "See you next time!" << endl;
             break;
         }
+
         else
-        {
-            cout << "Please, input a propper command." << endl;
-        }
+            cout << "Input a proper command." << endl;
 
         // Viewer then outputs the tree
-        cout << endl;
-        _view->print(_tree->returnRoot());
-        cout << endl;
+        Node* root = _tree->returnRoot();
+        if(root)
+        {
+            cout << endl;
+            _view->print(root);
+            cout << endl;
+        }
 
-        // ask Viewer for the next command
+        // asks Viewer for the next command
         command = _view->inputCommand();
     }
 }
