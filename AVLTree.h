@@ -26,10 +26,11 @@ class AVLTree
 
     Node* insert(Node* node, int key)
     {
+        // base case: root OR place a new node
         if(node == nullptr)
             return new Node(key);
 
-        // Traverse left/right
+        // traverse left/right to place the node
         if(key < node->key)
             node->left = insert(node->left, key);
 
@@ -39,8 +40,7 @@ class AVLTree
         else
             return node;
 
-        // STEP 2
-        // Update Heights
+        // update Heights
         node->height = 1 + maxHeight(node->left, node->right);
         if(debugger)
             cout << "curernt" << endl;
@@ -48,19 +48,18 @@ class AVLTree
         if(debugger)
             print(_root);
 
-        // STEP 3
-        // Check Balances
+        // check balances
         int bf = balanceFactor(node);
         if(debugger)
             if(node)
                 cout << "BF =  " << bf << '\t' << " NODE " << node->key << '\t' << key << endl;
 
-        // STEP 4
-        // ROTATE if needed
+        // rotate the tree if needed
         if(bf > 1 || bf < -1)
         {
             if(debugger)
                 cout << "choosing case" << endl;
+
             if(bf > 1 && key < node->left->key)
             {
                 if(debugger)
@@ -98,16 +97,18 @@ class AVLTree
     {
         cout << "";
 
+        // base Case: root OR place a new node
         if(node == nullptr)
             return node;
 
-        // Traverse left/right
+        // traverse left/right to place the node
         if(key < node->key)
             node->left = remove(node->left, key);
 
         else if(key > node->key)
             node->right = remove(node->right, key);
 
+        // suitable place was found
         else
         {
             if(!node->left || !node->right)
@@ -126,7 +127,7 @@ class AVLTree
                 else
                     *node = *temp;
 
-                // free(temp);
+                // free(temp); //check if its needed
             }
             else
             {
@@ -139,8 +140,7 @@ class AVLTree
         if(node == nullptr)
             return node;
 
-        // STEP 2
-        // Update Heights
+        // update Heights
         node->height = 1 + maxHeight(node->left, node->right);
         if(debugger1)
             cout << "curernt" << endl;
@@ -148,19 +148,18 @@ class AVLTree
         if(debugger1)
             print(node);
 
-        // STEP 3
-        // Check Balances
+        // check balances
         int bf = balanceFactor(node);
         if(debugger1)
             if(node)
                 cout << "BF =  " << bf << '\t' << " NODE " << node->key << '\t' << key << endl;
 
-        // STEP 4
-        // ROTATE if needed
+        // rotate the tree if needed
         if(bf > 1 || bf < -1)
         {
             if(debugger1)
                 cout << "choosing case" << endl;
+
             if(bf > 1 && balanceFactor(node->left) >= 0)
             {
                 if(debugger1)
@@ -228,6 +227,7 @@ class AVLTree
         return y;
     }
 
+    // returns the balance factor of a given node
     int balanceFactor(Node* cur)
     {
         // if the node is root return 0
@@ -251,6 +251,7 @@ class AVLTree
     }
 };
 
+// deletes the tree from the memory
 AVLTree::~AVLTree() { clear(_root); }
 
 void AVLTree::clear(Node* root)
@@ -263,6 +264,7 @@ void AVLTree::clear(Node* root)
     }
 }
 
+// prints the tree 'in-order'
 void AVLTree::print(Node* root, bool ch)
 {
     if(ch == false)
@@ -270,6 +272,9 @@ void AVLTree::print(Node* root, bool ch)
         cout << "Key" << '\t' << "L" << '\t' << "R" << '\t' << "BF" << '\t' << "H" << endl;
         ch = true;
     }
+
+    if(root->left)
+        AVLTree::print(root->left, ch);
 
     cout << root->key << '\t';
     if(root->left)
@@ -282,8 +287,6 @@ void AVLTree::print(Node* root, bool ch)
     cout << '\t';
     cout << root->height << endl;
 
-    if(root->left)
-        AVLTree::print(root->left, ch);
     if(root->right)
         AVLTree::print(root->right, ch);
 }

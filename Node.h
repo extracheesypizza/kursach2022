@@ -1,6 +1,12 @@
 #ifndef NODE_H
 #define NODE_H
 
+//
+//  Node.h
+//
+//  Class for the data storage unit
+//  of the Binary Seacrh Trees
+
 class Node
 {
    public:
@@ -57,7 +63,8 @@ int maxHeight(Node* left, Node* right)
 Node* minVal(Node* root)
 {
     Node* cur = root;
-    while(cur->left) cur = cur->left;
+    while(cur->left)  //
+        cur = cur->left;
 
     return cur;
 }
