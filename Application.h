@@ -2,7 +2,6 @@
 #define APPLICATION_H
 
 #include "AVLTree.h"
-#include "Cases.h"
 #include "Controller.h"
 
 class Application

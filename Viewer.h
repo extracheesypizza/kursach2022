@@ -1,12 +1,11 @@
 #ifndef VIEWER_H
 #define VIEWER_H
-
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <sstream>
 #include <vector>
 
 #include "AVLTree.h"
-#include "Node.h"
 
 using namespace std;
 
