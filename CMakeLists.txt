@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(Kursach2022_THIS main.cpp)
 
-set(SFML_DIR "SFML-2.5.1/lib/cmake/SFML")
+set(SFML_DIR "SFML/lib/cmake/SFML")
 target_link_libraries(Kursach2022_THIS sfml-graphics)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
