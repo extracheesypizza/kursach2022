@@ -1,44 +1,44 @@
 #ifndef NODE_H
 #define NODE_H
+#include <iostream>
+#include <sstream>
 
 //
 //  Node.h
 //
 //  Class for the data storage unit
 //  of the Binary Seacrh Trees
+//
 
+namespace Project
+{
 class Node
 {
    public:
     Node() {}
     Node(int x) : key(x), height(1), right(nullptr), left(nullptr) {}
     int key;
-    int height;
     Node* right;
     Node* left;
-
-    int updateAllHeights(Node* root);
-    int maxHeight(Node* left, Node* right);
-    Node* minVal(Node* root);
+    int height;
+    int updateAllHeights();
 };
 
-int updateAllHeights(Node* root)
+int Node::updateAllHeights()
 {
     int l, r;
-    if(root->left)
-        l = updateAllHeights(root->left) + 1;
-
+    if(this->left)
+        l = this->left->updateAllHeights() + 1;
     else
         l = 1;
 
-    if(root->right)
-        r = updateAllHeights(root->right) + 1;
-
+    if(this->right)
+        r = this->right->updateAllHeights() + 1;
     else
         r = 1;
 
     int h = l > r ? l : r;
-    root->height = h;
+    this->height = h;
     return h;
 }
 
@@ -60,6 +60,15 @@ int maxHeight(Node* left, Node* right)
     return l >= r ? l : r;
 }
 
+int toInt(std::string str)
+{
+    std::stringstream conversion;
+    int res;
+    conversion << str;
+    conversion >> res;
+    return res;
+}
+
 Node* minVal(Node* root)
 {
     Node* cur = root;
@@ -68,5 +77,5 @@ Node* minVal(Node* root)
 
     return cur;
 }
-
+}  // namespace Project
 #endif  // NODE_H
