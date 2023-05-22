@@ -1,80 +1,27 @@
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
+#include "Controller.hpp"
 
-#include <SFML/Graphics.hpp>
-#include <algorithm>
-#include <iostream>
-#include <sstream>
-#include <vector>
-
-#include "AVLTree.cpp"
+#include "Functions.hpp"
 
 namespace Project
 {
-class Controller
-{
-   public:
-    Controller(){};
-    Controller(AVLTree* tree)
-    {
-        command_ = "";
-        tSubscribers_.push_back(tree);
-    };
-
-    void handleEvent(sf::Event event);
-
-    // Observers
-    void addTree(AVLTree* tree) { tSubscribers_.push_back(tree); }
-    void removeTree(AVLTree* tree) { tSubscribers_.erase(find(tSubscribers_.begin(), tSubscribers_.end(), tree)); }
-
-   private:
-    std::string command_;
-    std::vector<std::string> msg_;
-    std::vector<AVLTree*> tSubscribers_;
-
-    // Utility
-    void setMsgCommand(std::string s);
-
-    // Signals
-    void handleClose();
-    void processCommand();
-    void handleResize(sf::Event event);
-    void handleKeyPress(sf::Event event);
-    void handleTextEntered(sf::Event event);
-    void notify();
-};
-
-bool isNumeric(std::string str)
-{
-    for(int i = 0; i < str.length(); i++)
-        if(!isdigit(str[i]))
-            return false;
-    return true;
-}
-
 void Controller::notify()
 {
     if(!msg_.empty())
     {
         if(msg_[0] == "ADD")
-            for(AVLTree* t : tSubscribers_)  //
-                t->insert(toInt(msg_[1]));
+            tree_->insert(toInt(msg_[1]));
 
         else if(msg_[0] == "DEL")
-            for(AVLTree* t : tSubscribers_)  //
-                t->remove(toInt(msg_[1]));
+            tree_->remove(toInt(msg_[1]));
 
         else if(msg_[0] == "ERROR" || msg_[0] == "TEXT")
-            for(AVLTree* t : tSubscribers_)  //
-                t->updateText(msg_[msg_.size() - 1]);
+            tree_->updateText(msg_[msg_.size() - 1]);
 
         else if(msg_[0] == "RESIZE")
-            for(AVLTree* t : tSubscribers_)  //
-                t->resize(toInt(msg_[msg_.size() - 2]), toInt(msg_[msg_.size() - 1]));
+            tree_->resize(toInt(msg_[msg_.size() - 2]), toInt(msg_[msg_.size() - 1]));
 
         else if(msg_[0] == "CLOSE")
-            for(AVLTree* t : tSubscribers_)  //
-                t->closeWindow();
+            tree_->closeWindow();
     }
 }
 
@@ -168,5 +115,5 @@ void Controller::processCommand()
         msg_.push_back("Wrong command!");
     }
 }
+
 }  // namespace Project
-#endif  // CONTROLLER_H

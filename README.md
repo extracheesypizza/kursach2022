@@ -1,2 +1,8 @@
 # kursach2022
-Полный рефактор кода и структуры проекта соответственно Вашим правкам. MVC паттерн в корне переосмыслен и построен практически с нуля, сам код покрасивше и без лишних комментариев. Не уверен, насколько правильно соблюден паттерн Observer [и как можно было грамотнее его вписать], но I tried my best. Hope you'll enjoy this one better.
+## How to build [for Windows]
+1. Build the SFML library accroding to this tutorial: https://www.sfml-dev.org/tutorials/2.5/compile-with-cmake.php
+2. Run "build.bat"
+3. Run /res/AVLTree.exe
+
+## What's new?
+Completely refactored the code: codestyle changes, proper MVC and Observer pattern implementations, SFML added as submodule, etc.

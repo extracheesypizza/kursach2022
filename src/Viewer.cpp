@@ -1,50 +1,11 @@
-#ifndef VIEWER_H
-#define VIEWER_H
+#include "Viewer.hpp"
 
-#include <SFML/Graphics.hpp>
 #include <cmath>
-#include <iostream>
-#include <sstream>
-#include <vector>
 
-#include "Node.cpp"
+#include "Functions.hpp"
 
 namespace Project
 {
-class Viewer
-{
-   public:
-    sf::RenderWindow* window_;
-
-    void setupTheWindow();
-    void updateFrame(Node* root);
-    void handleResize(int width, int height, Node* root);
-    void setText(std::string command);
-
-   private:
-    int x_;
-    int y_;
-    sf::Font font_;
-    sf::Text text_;
-    sf::Text typeCommand_;
-
-    // frame buffers
-    void drawBuffers();
-    void clearBuffers();
-    std::vector<sf::CircleShape> nodeBuffer_;
-    std::vector<sf::VertexArray> linesBuffer_;
-    std::vector<sf::Text> textBuffer_;
-    std::vector<sf::Text> interfaceBuffer_;
-
-    // rendering functions
-    sf::CircleShape createCircle(int radius, int xNew, int yNew);
-    sf::VertexArray createLinks(int x, int y, int xNew, int yNew, int position);
-    sf::Text createKey(Node* root, int xNew, int yNew, int radius);
-    void nodeDrawer(Node* root, int x, int y, int radius, int spacer, int level, int position, int widthLevels);
-    void getPosition(int& xNew, int& yNew, int x, int y, int radius, int spacer, int widthLevels, int level, int position);
-    void resizeNodes(int& spacer, int& radius, int widthLevels);
-};
-
 void Viewer::setText(std::string command)
 {
     interfaceBuffer_.clear();
@@ -65,7 +26,7 @@ void Viewer::setupTheWindow()
 {
     if(!font_.loadFromFile("arial.ttf"))
     {
-        std::cout << "ERROR LOADING FONT" << std::endl;
+        // std::cout << "ERROR LOADING FONT" << std::endl;
         return;
     }
 
@@ -241,32 +202,16 @@ void Viewer::handleResize(int width, int height, Node* root)
 {
     // update the view to the new size of the window and keep the center
     sf::Vector2u windowSize;
+    windowSize.x = width;
+    windowSize.y = height;
 
-    if(width < 500 && height > 500)
-    {
-        windowSize.x = 501;
-        windowSize.y = height;
-        window_->setSize(windowSize);
-    }
-    else if(width < 500 && height < 500)
-    {
-        windowSize.x = 501;
-        windowSize.y = 501;
-        window_->setSize(windowSize);
-    }
-    else if(width > 500 && height < 500)
-    {
-        windowSize.x = width;
-        windowSize.y = 501;
-        window_->setSize(windowSize);
-    }
-    else
-    {
-        windowSize.x = width;
-        windowSize.y = height;
-        window_->setSize(windowSize);
-    }
+    if(width < 500)
+        windowSize.x = 500;
 
+    if(height < 500)
+        windowSize.y = 500;
+
+    window_->setSize(windowSize);
     window_->setView(sf::View(sf::FloatRect(0, 0, windowSize.x, windowSize.y)));
 
     x_ = window_->getSize().x;
@@ -274,5 +219,22 @@ void Viewer::handleResize(int width, int height, Node* root)
 
     updateFrame(root);
 }
+
+void Viewer::onNotify(std::pair<std::vector<std::string>, Node*> p)
+{
+    vector<string> v = p.first;
+    Node* n = p.second;
+
+    if(v[0] == "TEXT")
+        setText(v[v.size() - 1]);
+
+    else if(v[0] == "CLOSE")
+        window_->close();
+
+    else if(v[0] == "RESIZE")
+        handleResize(toInt(v[v.size() - 2]), toInt(v[v.size() - 1]), n);
+
+    else if(v[0] == "FRAME")
+        updateFrame(n);
+}
 }  // namespace Project
-#endif  // VIEWER_H
