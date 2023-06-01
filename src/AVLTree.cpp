@@ -141,16 +141,16 @@ Node* AVLTree::balanceIfNeeded(Node* node)
         if(bf > 1 && balanceFactor(node->left) >= 0)
             return rightRotate(node);
 
-        if(bf > 1 && balanceFactor(node->left) < 0)
+        else if(bf > 1 && balanceFactor(node->left) < 0)
         {
             node->left = leftRotate(node->left);
             return rightRotate(node);
         }
 
-        if(bf < -1 && balanceFactor(node->right) <= 0)
+        else if(bf < -1 && balanceFactor(node->right) <= 0)
             return leftRotate(node);
 
-        if(bf < -1 && balanceFactor(node->right) > 0)
+        else if(bf < -1 && balanceFactor(node->right) > 0)
         {
             node->right = rightRotate(node->right);
             return leftRotate(node);

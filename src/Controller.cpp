@@ -28,16 +28,17 @@ void Controller::handleEvent(sf::Event event)
     if(event.type == sf::Event::Closed)
         handleClose();
 
-    if(event.type == sf::Event::TextEntered)
+    else if(event.type == sf::Event::TextEntered)
         handleTextEntered(event);
 
-    if(event.type == sf::Event::Resized)
+    else if(event.type == sf::Event::Resized)
         handleResize(event);
 
-    if(event.type == sf::Event::KeyPressed)
+    else if(event.type == sf::Event::KeyPressed)
         handleKeyPress(event);
 
     notify();
+    msg_.clear();
 }
 
 void Controller::setMsgCommand(std::string s)
@@ -66,10 +67,10 @@ void Controller::handleKeyPress(sf::Event event)
         msg_.push_back(command_);
     }
 
-    if(event.key.code == sf::Keyboard::Enter && !command_.empty())
+    else if(event.key.code == sf::Keyboard::Enter && !command_.empty())
         processCommand();
 
-    if(event.key.code == sf::Keyboard::Backspace && command_.size() != 0)
+    else if(event.key.code == sf::Keyboard::Backspace && command_.size() != 0)
     {
         command_.erase(command_.size() - 1);
         setMsgCommand("TEXT");
