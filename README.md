@@ -6,5 +6,9 @@
 4. Run "build.bat"
 5. Run /res/AVLTree.exe
 
+## How to use
+- Type "ADD #", where # is a number, to add a node to the tree
+- Type "DEL #", where # is a number, to remove a node from the tree
+
 ## What's new?
 Completely refactored the code: codestyle changes, proper MVC and Observer pattern implementations, SFML added as submodule, etc.
