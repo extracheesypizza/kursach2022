@@ -18,11 +18,9 @@ class Observer
    public:
     template <class Tt1, class Tt2, class Tt3>
     Observer(Tt1&& onSubscribe, Tt2&& onNotify, Tt3&& onUnsubscribe)
-        : onSubscribe_(std::forward<Tt1>(onSubscribe)),     //
-          onNotify_(std::forward<Tt2>(onNotify)),           //
-          onUnsubscribe_(std::forward<Tt3>(onUnsubscribe))  //
-    {
-    }
+        : onSubscribe_(std::forward<Tt1>(onSubscribe)),  //
+          onNotify_(std::forward<Tt2>(onNotify)),        //
+          onUnsubscribe_(std::forward<Tt3>(onUnsubscribe)){};
 
     Observer(const Observer&) = delete;
     Observer& operator=(const Observer&) = delete;
@@ -57,9 +55,7 @@ class Observable
    public:
     // move constructor
     template <class Tt>
-    Observable(Tt&& data) : data_(std::forward<Tt>(data))
-    {
-    }
+    Observable(Tt&& data) : data_(std::forward<Tt>(data)){};
 
     Observable(const Observable&) = delete;
     Observable& operator=(const Observable&) = delete;

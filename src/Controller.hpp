@@ -8,12 +8,7 @@ namespace Project
 class Controller
 {
    public:
-    Controller(){};
-    Controller(AVLTree* tree)
-    {
-        command_ = "";
-        tree_ = tree;
-    };
+    Controller(AVLTree* tree) : command_(""), tree_(tree){};
 
     void handleEvent(sf::Event event);
 

@@ -6,8 +6,7 @@ namespace Project
 class Node
 {
    public:
-    Node() {}
-    Node(int x) : key(x), height(1), right(nullptr), left(nullptr) {}
+    Node(int x) : key(x), height(1), right(nullptr), left(nullptr){};
     int key;
     Node* right;
     Node* left;

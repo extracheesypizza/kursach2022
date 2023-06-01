@@ -1,7 +1,5 @@
 #include "Controller.hpp"
 
-#include "Functions.hpp"
-
 namespace Project
 {
 void Controller::notify()

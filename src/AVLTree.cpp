@@ -1,7 +1,5 @@
 #include "AVLTree.hpp"
 
-#include "Functions.hpp"
-
 namespace Project
 {
 void AVLTree::insert(int key)
@@ -196,7 +194,7 @@ Node* AVLTree::rightRotate(Node* y)
     return x;
 }
 
-int AVLTree::balanceFactor(Node* cur)
+int AVLTree::balanceFactor(Node* cur) const
 {
     // if the node is root return 0
     if(cur == nullptr)

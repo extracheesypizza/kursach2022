@@ -2,9 +2,8 @@
 #define VIEWER_HPP
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <vector>
 
+#include "Functions.hpp"
 #include "Node.hpp"
 #include "Observer.hpp"
 
@@ -27,11 +26,9 @@ class Viewer
     void setText(string command);
 
    private:
-    int x_;
-    int y_;
+    int x_, y_;
     sf::Font font_;
-    sf::Text text_;
-    sf::Text typeCommand_;
+    sf::Text text_, typeCommand_;
 
     // frame buffers
     void drawBuffers();

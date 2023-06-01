@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-#include "Functions.hpp"
-
 namespace Project
 {
 void Viewer::setText(std::string command)

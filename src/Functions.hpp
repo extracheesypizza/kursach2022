@@ -50,7 +50,6 @@ static Node* minVal(Node* root)
 
     return cur;
 }
-
 }  // namespace Project
 
 #endif  // FUNCTIONS_H

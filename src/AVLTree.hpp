@@ -1,7 +1,5 @@
 #ifndef AVLTREE_HPP
 #define AVLTREE_HPP
-#include <iostream>
-#include <vector>
 
 #include "Viewer.hpp"
 
@@ -45,8 +43,8 @@ class AVLTree
     sf::Text typeCommand_;
 
     void clear(Node* root);
-    static int balanceFactor(Node* cur);
-    Node* returnRoot() { return root_; }
+    int balanceFactor(Node* cur) const;
+    Node* returnRoot() const { return root_; }
 
     Node* rightRotate(Node* y);
     Node* leftRotate(Node* x);
