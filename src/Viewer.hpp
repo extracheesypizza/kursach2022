@@ -16,6 +16,8 @@ namespace Project
 class Viewer
 {
    public:
+    ~Viewer();
+
     sf::RenderWindow* window_;
 
     Observer<pair<vector<string>, Node*>>* port() { return &in_; }
@@ -44,7 +46,7 @@ class Viewer
     sf::Text createKey(Node* root, int xNew, int yNew, int radius);
     void nodeDrawer(Node* root, int x, int y, int radius, int spacer, int level, int position, int widthLevels);
     void getPosition(int& xNew, int& yNew, int x, int y, int radius, int spacer, int widthLevels, int level, int position);
-    void resizeNodes(int& spacer, int& radius, int widthLevels);
+    void resizeNodes(int& spacer, int& radius, int widthLevels, int heightLevels);
 
     // Observer
     void onNotify(std::pair<vector<string>, Node*> v);

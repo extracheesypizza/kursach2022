@@ -9,6 +9,7 @@ class Controller
 {
    public:
     Controller(AVLTree* tree) : command_(""), tree_(tree){};
+    ~Controller();
 
     void handleEvent(sf::Event event);
 

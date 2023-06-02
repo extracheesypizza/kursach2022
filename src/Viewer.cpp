@@ -4,6 +4,14 @@
 
 namespace Project
 {
+Viewer::~Viewer()
+{
+    window_ = nullptr;
+    in_.unsubscribe();
+    clearBuffers();
+    interfaceBuffer_.clear();
+}
+
 void Viewer::setText(std::string command)
 {
     interfaceBuffer_.clear();
@@ -97,7 +105,7 @@ sf::VertexArray Viewer::createLinks(int x, int y, int xNew, int yNew, int positi
 {
     sf::VertexArray lines(sf::LinesStrip, 2);
     lines[0].position = sf::Vector2f(x, y);
-    lines[0].color = sf::Color::Red;
+    lines[0].color = sf::Color::Black;
     if(position == 1)
         lines[1].position = sf::Vector2f(xNew, yNew);
     else if(position == 0)
@@ -105,7 +113,7 @@ sf::VertexArray Viewer::createLinks(int x, int y, int xNew, int yNew, int positi
     else
         lines[1].position = sf::Vector2f(x, y);
 
-    lines[1].color = sf::Color::Red;
+    lines[1].color = sf::Color::Black;
     return lines;
 }
 
@@ -146,12 +154,12 @@ void Viewer::nodeDrawer(Node* root, int x, int y, int radius, int spacer, int le
     }
 }
 
-void Viewer::resizeNodes(int& spacer, int& radius, int widthLevels)
+void Viewer::resizeNodes(int& spacer, int& radius, int widthLevels, int heightLevels)
 {
     // Firstly, try to resize the spacers
     while(spacer > 5)
     {
-        if(widthLevels * radius + (widthLevels - 1) * spacer > window_->getSize().x)
+        if(widthLevels * radius + (widthLevels - 1) * spacer > window_->getSize().x || heightLevels * radius * 2 + (heightLevels - 1) * spacer > window_->getSize().y - 125)
             spacer--;
         else
             return;
@@ -160,7 +168,7 @@ void Viewer::resizeNodes(int& spacer, int& radius, int widthLevels)
     // If it was not enough - decrease the size of the nodes
     while(radius > 15)
     {
-        if(widthLevels * radius + (widthLevels - 1) * spacer > window_->getSize().x)
+        if(widthLevels * radius + (widthLevels - 1) * spacer > window_->getSize().x || heightLevels * radius * 2 + (heightLevels - 1) * spacer > window_->getSize().y - 125)
             radius--;
         else
             return;
@@ -177,12 +185,12 @@ void Viewer::updateFrame(Node* root)
         int widthLevels = pow(2, root->height);
 
         int nodeRadius = 25;
-        int spacer = 10;
+        int spacer = 5;
 
         int centreX = window_->getSize().x / 2.f;
         int centreY = window_->getSize().y / 2.f;
 
-        resizeNodes(spacer, nodeRadius, widthLevels);
+        resizeNodes(spacer, nodeRadius, widthLevels, heightLevels);
 
         clearBuffers();
 

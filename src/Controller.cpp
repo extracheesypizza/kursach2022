@@ -2,6 +2,13 @@
 
 namespace Project
 {
+Controller::~Controller()
+{
+    command_.clear();
+    msg_.clear();
+    tree_ = nullptr;
+}
+
 void Controller::notify()
 {
     if(!msg_.empty())

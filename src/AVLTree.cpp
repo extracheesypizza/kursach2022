@@ -2,6 +2,12 @@
 
 namespace Project
 {
+AVLTree::~AVLTree()
+{
+    clear(root_);
+    cmd_.clear();
+}
+
 void AVLTree::insert(int key)
 {
     root_ = insert(root_, key);

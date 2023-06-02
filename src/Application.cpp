@@ -9,6 +9,14 @@ Application::Application()
     control_ = new Controller(tree_);
 };
 
+Application::~Application()
+{
+    view_ = nullptr;
+    tree_ = nullptr;
+    control_ = nullptr;
+    window_ = nullptr;
+};
+
 void Application::execute()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "AVL-Tree");

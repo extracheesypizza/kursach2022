@@ -13,6 +13,7 @@ class AVLTree
 {
    public:
     AVLTree(Observer<pair<vector<string>, Node*>>* obs) : root_(nullptr) { out_.subscribe(obs); };
+    ~AVLTree();
 
     AVLTree(const AVLTree&) = delete;
     AVLTree& operator=(const AVLTree&) = delete;
