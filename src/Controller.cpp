@@ -87,12 +87,14 @@ void Controller::handleKeyPress(sf::Event event)
 
 void Controller::handleTextEntered(sf::Event event)
 {
-    if(event.text.unicode >= 48 && event.text.unicode < 128)
-    {
+    if(event.text.unicode >= 48 && event.text.unicode < 91)
         command_ += event.text.unicode;
-        setMsgCommand("TEXT");
-        msg_.push_back(command_);
-    }
+
+    else if(event.text.unicode >= 97 && event.text.unicode < 128)
+        command_ += event.text.unicode - 32;
+
+    setMsgCommand("TEXT");
+    msg_.push_back(command_);
 }
 
 void Controller::processCommand()

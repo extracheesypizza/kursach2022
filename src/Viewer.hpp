@@ -58,4 +58,4 @@ class Viewer
 };
 
 }  // namespace Project
-#endif  // VIEWER_H
+#endif  // VIEWER_HPP

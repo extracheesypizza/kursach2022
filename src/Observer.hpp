@@ -98,4 +98,4 @@ class Observable
 };
 }  // namespace Project
 
-#endif  // OBSERVER_H
+#endif  // OBSERVER_HPP

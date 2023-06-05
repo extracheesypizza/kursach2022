@@ -14,4 +14,4 @@ class Node
     int updateAllHeights();
 };
 }  // namespace Project
-#endif  // NODE_H
+#endif  // NODE_HPP

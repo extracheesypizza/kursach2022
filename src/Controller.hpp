@@ -31,4 +31,4 @@ class Controller
 };
 
 }  // namespace Project
-#endif  // CONTROLLER_H
+#endif  // CONTROLLER_HPP

@@ -21,4 +21,4 @@ class Application
 };
 
 }  // namespace Project
-#endif  // APPLICATION_H
+#endif  // APPLICATION_HPP

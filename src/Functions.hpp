@@ -52,4 +52,4 @@ static Node* minVal(Node* root)
 }
 }  // namespace Project
 
-#endif  // FUNCTIONS_H
+#endif  // FUNCTIONS_HPP

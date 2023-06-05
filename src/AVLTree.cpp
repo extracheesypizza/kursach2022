@@ -13,7 +13,6 @@ void AVLTree::insert(int key)
     root_ = insert(root_, key);
     root_->updateAllHeights();
     updateScreen(root_, "");
-    notify();
 }
 
 void AVLTree::remove(int key)
@@ -22,7 +21,6 @@ void AVLTree::remove(int key)
     if(root_)
         root_->updateAllHeights();
     updateScreen(root_, "");
-    notify();
 }
 
 Node* AVLTree::insert(Node* node, int key)
