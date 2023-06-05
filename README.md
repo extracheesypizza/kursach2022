@@ -1,4 +1,6 @@
 # kursach2022
+![](res/preview.gif)
+
 ## How to build [for Windows]
 1. ```git clone``` the repository
 2. Run  ```git submodule init``` and ```git submodule update``` to download the SFML Library (it will take some time and may seem stuck, but be patient)
