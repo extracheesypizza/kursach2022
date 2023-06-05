@@ -19,7 +19,8 @@ void AVLTree::insert(int key)
 void AVLTree::remove(int key)
 {
     root_ = remove(root_, key);
-    root_->updateAllHeights();
+    if(root_)
+        root_->updateAllHeights();
     updateScreen(root_, "");
     notify();
 }

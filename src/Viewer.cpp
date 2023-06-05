@@ -197,11 +197,13 @@ void Viewer::updateFrame(Node* root)
         int firstLayer = (centreY * 2 / 3) + (-1 * (heightLevels / 2) * (nodeRadius / 2 + spacer));
 
         nodeDrawer(root, centreX, firstLayer, nodeRadius, spacer, 2, 2, widthLevels);
-
-        drawBuffers();
-
-        window_->display();
     }
+
+    else
+        clearBuffers();
+
+    drawBuffers();
+    window_->display();
 }
 
 void Viewer::handleResize(int width, int height, Node* root)
