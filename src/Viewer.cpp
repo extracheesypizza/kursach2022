@@ -4,9 +4,16 @@
 
 namespace Project
 {
+Viewer::Viewer()
+{
+    // [!] SFML requires the window to be a pointer, thus I'm using "new"
+    window_ = new sf::RenderWindow(sf::VideoMode(800, 600), "AVL-Tree");
+    setupTheWindow();
+}
+
 Viewer::~Viewer()
 {
-    window_ = nullptr;
+    delete window_;
     in_.unsubscribe();
     clearBuffers();
     interfaceBuffer_.clear();
@@ -25,6 +32,7 @@ void Viewer::setText(std::string command)
     interfaceBuffer_.push_back(text_);
 
     drawBuffers();
+
     window_->display();
 }
 
@@ -56,6 +64,7 @@ void Viewer::clearBuffers()
     nodeBuffer_.clear();
     linesBuffer_.clear();
     textBuffer_.clear();
+    setText("");
 }
 
 void Viewer::drawBuffers()
@@ -185,7 +194,7 @@ void Viewer::updateFrame(Node* root)
         int widthLevels = pow(2, root->height);
 
         int nodeRadius = 25;
-        int spacer = 5;
+        int spacer = 10;
 
         int centreX = window_->getSize().x / 2.f;
         int centreY = window_->getSize().y / 2.f;
@@ -206,17 +215,19 @@ void Viewer::updateFrame(Node* root)
     window_->display();
 }
 
-void Viewer::handleResize(int width, int height, Node* root)
+void Viewer::handleResize(Node* root)
 {
     // update the view to the new size of the window and keep the center
     sf::Vector2u windowSize;
-    windowSize.x = width;
-    windowSize.y = height;
+    windowSize.x = window_->getSize().x;
+    windowSize.y = window_->getSize().y;
 
-    if(width < 500)
+    // cout << window_->getSize().x << endl;
+
+    if(windowSize.x < 500)
         windowSize.x = 500;
 
-    if(height < 500)
+    if(windowSize.y < 500)
         windowSize.y = 500;
 
     window_->setSize(windowSize);
@@ -225,24 +236,28 @@ void Viewer::handleResize(int width, int height, Node* root)
     x_ = window_->getSize().x;
     y_ = window_->getSize().y;
 
-    updateFrame(root);
+    drawBuffers();
+    window_->display();
 }
 
-void Viewer::onNotify(std::pair<std::vector<std::string>, Node*> p)
+void Viewer::onNotifyModel(Node* n) { updateFrame(n); }
+
+void Viewer::onNotifyController(vector<string> v)
 {
-    vector<string> v = p.first;
-    Node* n = p.second;
+    if(!v.empty())
+    {
+        if(v[0] == "TEXT")
+            setText(v[1]);
 
-    if(v[0] == "TEXT")
-        setText(v[v.size() - 1]);
+        else if(v[0] == "ERROR")
+            setText(v[v.size() - 1]);
 
-    else if(v[0] == "CLOSE")
-        window_->close();
+        else if(v[0] == "RESIZE")
+            handleResize(nullptr);
 
-    else if(v[0] == "RESIZE")
-        handleResize(toInt(v[v.size() - 2]), toInt(v[v.size() - 1]), n);
-
-    else if(v[0] == "FRAME")
-        updateFrame(n);
+        else if(v[0] == "CLOSE")
+            window_->close();
+    }
 }
+
 }  // namespace Project

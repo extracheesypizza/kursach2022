@@ -8,15 +8,14 @@ namespace Project
 class Application
 {
    private:
-    Viewer* view_;
-    AVLTree* tree_;
-    Controller* control_;
+    Viewer view_();
+    AVLTree tree_();
+    Controller control_();
 
     sf::RenderWindow* window_;
 
    public:
-    Application();
-    ~Application();
+    Application(){};
     void execute();
 };
 

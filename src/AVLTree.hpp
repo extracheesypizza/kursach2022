@@ -12,7 +12,7 @@ namespace Project
 class AVLTree
 {
    public:
-    AVLTree(Observer<pair<vector<string>, Node*>>* obs) : root_(nullptr) { out_.subscribe(obs); };
+    AVLTree(Observer<Node*>* obs) : root_(nullptr) { out_.subscribe(obs); };
     ~AVLTree();
 
     AVLTree(const AVLTree&) = delete;
@@ -20,28 +20,15 @@ class AVLTree
     AVLTree(AVLTree&&) noexcept = delete;
     AVLTree& operator=(AVLTree&&) noexcept = delete;
 
-    // Frames
-    void updateText(std::string command);
-    void updateScreen(Node* root, std::string command);
-    void closeWindow();
-    void resize(int width, int height);
-
-    // Utilities
-    void setCmdCommand(std::string s);
-
-    // Observer
-    void subscribe(Observer<pair<vector<string>, Node*>>* obs) { out_.subscribe(obs); }
-
-    // AVL-Trees
+    // AVL-Tree
     void insert(int key);
     void remove(int key);
 
+    // Observer
+    void subscribe(Observer<Node*>* obs) { out_.subscribe(obs); }
+
    private:
     Node* root_;
-    vector<string> cmd_;
-    Observable<pair<vector<string>, Node*>> out_ = [this]() { return pair(cmd_, root_); };
-    sf::Text command_;
-    sf::Text typeCommand_;
 
     void clear(Node* root);
     int balanceFactor(Node* cur) const;
@@ -55,6 +42,8 @@ class AVLTree
     Node* insert(Node* node, int key);
     Node* remove(Node* node, int key);
 
+    // Observer
+    Observable<Node*> out_ = [this]() { return root_; };
     void notify();
 };
 

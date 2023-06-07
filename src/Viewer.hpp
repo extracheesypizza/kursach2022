@@ -16,15 +16,17 @@ namespace Project
 class Viewer
 {
    public:
+    Viewer();
     ~Viewer();
 
     sf::RenderWindow* window_;
 
-    Observer<pair<vector<string>, Node*>>* port() { return &in_; }
+    Observer<Node*>* port() { return &in_; }
+    Observer<vector<string>>* controllerPort() { return &inController_; }
 
     void setupTheWindow();
     void updateFrame(Node* root);
-    void handleResize(int width, int height, Node* root);
+    void handleResize(Node* root);
     void setText(string command);
 
    private:
@@ -48,13 +50,20 @@ class Viewer
     void getPosition(int& xNew, int& yNew, int x, int y, int radius, int spacer, int widthLevels, int level, int position);
     void resizeNodes(int& spacer, int& radius, int widthLevels, int heightLevels);
 
-    // Observer
-    void onNotify(std::pair<vector<string>, Node*> v);
-    Observer<std::pair<vector<string>, Node*>> in_ =                      //
-        Observer<std::pair<vector<string>, Node*>>(                       //
-            [this](std::pair<vector<string>, Node*> p) { ; },             //
-            [this](std::pair<vector<string>, Node*> p) { onNotify(p); },  //
-            [this](std::pair<vector<string>, Node*> p) { ; });            //
+    // Observers
+    void onNotifyModel(Node* n);
+    Observer<Node*> in_ =                           //
+        Observer<Node*>(                            //
+            [this](Node* n) { onNotifyModel(n); },  //
+            [this](Node* n) { onNotifyModel(n); },  //
+            [this](Node* n) { ; });                 //
+
+    void onNotifyController(vector<string> v);
+    Observer<vector<string>> inController_ =                      //
+        Observer<vector<string>>(                                 //
+            [this](vector<string> p) { onNotifyController(p); },  //
+            [this](vector<string> p) { onNotifyController(p); },  //
+            [this](vector<string> p) { ; });                      //
 };
 
 }  // namespace Project

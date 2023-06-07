@@ -2,17 +2,13 @@
 
 namespace Project
 {
-AVLTree::~AVLTree()
-{
-    clear(root_);
-    cmd_.clear();
-}
+AVLTree::~AVLTree() { clear(root_); }
 
 void AVLTree::insert(int key)
 {
     root_ = insert(root_, key);
     root_->updateAllHeights();
-    updateScreen(root_, "");
+    notify();
 }
 
 void AVLTree::remove(int key)
@@ -20,7 +16,7 @@ void AVLTree::remove(int key)
     root_ = remove(root_, key);
     if(root_)
         root_->updateAllHeights();
-    updateScreen(root_, "");
+    notify();
 }
 
 Node* AVLTree::insert(Node* node, int key)
@@ -95,43 +91,6 @@ Node* AVLTree::remove(Node* node, int key)
     node->height = 1 + maxHeight(node->left, node->right);
 
     return balanceIfNeeded(node);
-}
-
-void AVLTree::setCmdCommand(std::string s)
-{
-    if(cmd_.size() == 0)
-        cmd_.push_back(s);
-    else
-        cmd_[0] = s;
-}
-
-void AVLTree::resize(int width, int height)
-{
-    setCmdCommand("RESIZE");
-    cmd_.push_back(std::to_string(width));
-    cmd_.push_back(std::to_string(height));
-    notify();
-}
-
-void AVLTree::closeWindow()
-{
-    setCmdCommand("CLOSE");
-    notify();
-}
-
-void AVLTree::updateText(std::string command)
-{
-    setCmdCommand("TEXT");
-    cmd_.push_back(command);
-    notify();
-}
-
-void AVLTree::updateScreen(Node* root, std::string command)
-{
-    setCmdCommand("FRAME");
-    cmd_.push_back(command);
-    notify();
-    updateText(command);
 }
 
 Node* AVLTree::balanceIfNeeded(Node* node)
@@ -235,10 +194,6 @@ void AVLTree::clear(Node* root)
     }
 }
 
-void AVLTree::notify()
-{
-    if(!cmd_.empty())
-        out_.notify();
-}
+void AVLTree::notify() { out_.notify(); }
 
 }  // namespace Project

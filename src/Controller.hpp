@@ -8,7 +8,7 @@ namespace Project
 class Controller
 {
    public:
-    Controller(AVLTree* tree) : command_(""), tree_(tree){};
+    Controller(AVLTree* tree, Observer<vector<string>>* obs) : command_(""), tree_(tree) { out_.subscribe(obs); };
     ~Controller();
 
     void handleEvent(sf::Event event);
@@ -22,12 +22,14 @@ class Controller
     void setMsgCommand(std::string s);
 
     // Signals
+    Observable<vector<string>> out_ = [this]() { return msg_; };
     void handleClose();
     void processCommand();
     void handleResize(sf::Event event);
     void handleKeyPress(sf::Event event);
     void handleTextEntered(sf::Event event);
-    void notify();
+    void notifyModel();
+    void notifyViewer();
 };
 
 }  // namespace Project

@@ -13,4 +13,4 @@
 - Type "DEL #", where # is a number, to remove a node from the tree
 
 ## What's new?
-Completely refactored the code: codestyle changes, proper MVC and Observer pattern implementations, SFML added as submodule, etc.
+Controller <-> Viewer connection now uses Observer Pattern, removed unnecessary methods from the AVL-Tree class, changed the data type used by Model <-> Viewer Observer connection, Application now has AVL-Tree, Viewer and Controller as variables, added onSubscribe methods, etc.

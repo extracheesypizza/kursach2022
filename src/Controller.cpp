@@ -6,10 +6,10 @@ Controller::~Controller()
 {
     command_.clear();
     msg_.clear();
-    tree_ = nullptr;
+    delete tree_;
 }
 
-void Controller::notify()
+void Controller::notifyModel()
 {
     if(!msg_.empty())
     {
@@ -18,17 +18,10 @@ void Controller::notify()
 
         else if(msg_[0] == "DEL")
             tree_->remove(toInt(msg_[1]));
-
-        else if(msg_[0] == "ERROR" || msg_[0] == "TEXT")
-            tree_->updateText(msg_[msg_.size() - 1]);
-
-        else if(msg_[0] == "RESIZE")
-            tree_->resize(toInt(msg_[msg_.size() - 2]), toInt(msg_[msg_.size() - 1]));
-
-        else if(msg_[0] == "CLOSE")
-            tree_->closeWindow();
     }
 }
+
+void Controller::notifyViewer() { out_.notify(); }
 
 void Controller::handleEvent(sf::Event event)
 {
@@ -44,7 +37,6 @@ void Controller::handleEvent(sf::Event event)
     else if(event.type == sf::Event::KeyPressed)
         handleKeyPress(event);
 
-    notify();
     msg_.clear();
 }
 
@@ -56,13 +48,18 @@ void Controller::setMsgCommand(std::string s)
         msg_[0] = s;
 }
 
-void Controller::handleClose() { setMsgCommand("CLOSE"); }
+void Controller::handleClose()
+{
+    setMsgCommand("CLOSE");
+    notifyViewer();
+}
 
 void Controller::handleResize(sf::Event event)
 {
     setMsgCommand("RESIZE");
     msg_.push_back(std::to_string(event.size.width));
     msg_.push_back(std::to_string(event.size.height));
+    notifyViewer();
 }
 
 void Controller::handleKeyPress(sf::Event event)
@@ -83,18 +80,22 @@ void Controller::handleKeyPress(sf::Event event)
         setMsgCommand("TEXT");
         msg_.push_back(command_);
     }
+    notifyViewer();
 }
 
 void Controller::handleTextEntered(sf::Event event)
 {
-    if(event.text.unicode >= 48 && event.text.unicode < 91)
-        command_ += event.text.unicode;
+    if(event.text.unicode >= 48 && event.text.unicode < 128)
+    {
+        if(event.text.unicode >= 97 && event.text.unicode < 128)
+            command_ += event.text.unicode - 32;
+        else
+            command_ += event.text.unicode;
 
-    else if(event.text.unicode >= 97 && event.text.unicode < 128)
-        command_ += event.text.unicode - 32;
-
-    setMsgCommand("TEXT");
-    msg_.push_back(command_);
+        setMsgCommand("TEXT");
+        msg_.push_back(command_);
+        notifyViewer();
+    }
 }
 
 void Controller::processCommand()
@@ -115,6 +116,8 @@ void Controller::processCommand()
             msg_[0] = "ERROR";
             msg_.push_back("Enter a number!");
         }
+        else
+            notifyModel();
     }
 
     else
