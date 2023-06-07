@@ -31,6 +31,11 @@ void Viewer::setText(std::string command)
     typeCommand_.setStyle(sf::Text::Bold);
     typeCommand_.setString("Type your command: ");
 
+    sf::Text text_;
+    text_.setFont(font_);
+    text_.setCharacterSize(24);
+    text_.setFillColor(sf::Color::Red);
+    text_.setStyle(sf::Text::Bold);
     text_.setString(command);
     text_.setPosition(typeCommand_.getGlobalBounds().left + typeCommand_.getGlobalBounds().width, 0);
 
@@ -49,11 +54,6 @@ void Viewer::setupTheWindow()
         // std::cout << "ERROR LOADING FONT" << std::endl;
         return;
     }
-
-    text_.setFont(font_);
-    text_.setCharacterSize(24);
-    text_.setFillColor(sf::Color::Red);
-    text_.setStyle(sf::Text::Bold);
 
     setText("");
 

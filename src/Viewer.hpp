@@ -32,7 +32,6 @@ class Viewer
    private:
     int x_, y_;
     sf::Font font_;
-    sf::Text text_;
 
     // frame buffers
     void drawBuffers();
