@@ -21,7 +21,7 @@ class Viewer
 
     sf::RenderWindow* window_;
 
-    Observer<Node*>* port() { return &in_; }
+    Observer<Node*>* modelPort() { return &inModel_; }
     Observer<vector<string>>* controllerPort() { return &inController_; }
 
     void setupTheWindow();
@@ -32,7 +32,7 @@ class Viewer
    private:
     int x_, y_;
     sf::Font font_;
-    sf::Text text_, typeCommand_;
+    sf::Text text_;
 
     // frame buffers
     void drawBuffers();
@@ -52,7 +52,7 @@ class Viewer
 
     // Observers
     void onNotifyModel(Node* n);
-    Observer<Node*> in_ =                           //
+    Observer<Node*> inModel_ =                      //
         Observer<Node*>(                            //
             [this](Node* n) { onNotifyModel(n); },  //
             [this](Node* n) { onNotifyModel(n); },  //
@@ -61,9 +61,9 @@ class Viewer
     void onNotifyController(vector<string> v);
     Observer<vector<string>> inController_ =                      //
         Observer<vector<string>>(                                 //
-            [this](vector<string> p) { onNotifyController(p); },  //
-            [this](vector<string> p) { onNotifyController(p); },  //
-            [this](vector<string> p) { ; });                      //
+            [this](vector<string> v) { onNotifyController(v); },  //
+            [this](vector<string> v) { onNotifyController(v); },  //
+            [this](vector<string> v) { ; });                      //
 };
 
 }  // namespace Project

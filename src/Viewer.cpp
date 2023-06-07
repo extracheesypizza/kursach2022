@@ -14,7 +14,8 @@ Viewer::Viewer()
 Viewer::~Viewer()
 {
     delete window_;
-    in_.unsubscribe();
+    inModel_.unsubscribe();
+    inController_.unsubscribe();
     clearBuffers();
     interfaceBuffer_.clear();
 }
@@ -23,9 +24,14 @@ void Viewer::setText(std::string command)
 {
     interfaceBuffer_.clear();
 
-    text_.setString(command);
+    sf::Text typeCommand_;
+    typeCommand_.setFont(font_);
+    typeCommand_.setCharacterSize(24);
+    typeCommand_.setFillColor(sf::Color::Black);
+    typeCommand_.setStyle(sf::Text::Bold);
     typeCommand_.setString("Type your command: ");
 
+    text_.setString(command);
     text_.setPosition(typeCommand_.getGlobalBounds().left + typeCommand_.getGlobalBounds().width, 0);
 
     interfaceBuffer_.push_back(typeCommand_);
@@ -48,11 +54,6 @@ void Viewer::setupTheWindow()
     text_.setCharacterSize(24);
     text_.setFillColor(sf::Color::Red);
     text_.setStyle(sf::Text::Bold);
-
-    typeCommand_.setFont(font_);
-    typeCommand_.setCharacterSize(24);
-    typeCommand_.setFillColor(sf::Color::Black);
-    typeCommand_.setStyle(sf::Text::Bold);
 
     setText("");
 

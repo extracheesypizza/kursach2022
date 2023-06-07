@@ -5,7 +5,7 @@ namespace Project
 void Application::execute()
 {
     Viewer view_;
-    AVLTree tree_(view_.port());
+    AVLTree tree_(view_.modelPort());
     Controller control_(&tree_, view_.controllerPort());
 
     while(view_.window_->isOpen())
