@@ -180,6 +180,33 @@ int AVLTree::balanceFactor(Node* cur) const
     return l - r;
 }
 
+int AVLTree::maxHeight(Node* left, Node* right)
+{
+    // get heights of left and right subtrees
+    int l, r;
+    if(left == nullptr)
+        l = 0;
+    else
+        l = left->height;
+
+    if(right == nullptr)
+        r = 0;
+    else
+        r = right->height;
+
+    // return the max height
+    return l >= r ? l : r;
+}
+
+Node* AVLTree::minVal(Node* root)
+{
+    Node* cur = root;
+    while(cur->left)  //
+        cur = cur->left;
+
+    return cur;
+}
+
 // Many people online suggest it's an okay way of deallocating memory
 void AVLTree::clear(Node* root)
 {

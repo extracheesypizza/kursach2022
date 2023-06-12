@@ -8,20 +8,6 @@ Controller::~Controller()
     msg_.clear();
 }
 
-void Controller::notifyModel()
-{
-    if(!msg_.empty())
-    {
-        if(msg_[0] == "ADD")
-            tree_->insert(toInt(msg_[1]));
-
-        else if(msg_[0] == "DEL")
-            tree_->remove(toInt(msg_[1]));
-    }
-}
-
-void Controller::notifyViewer() { out_.notify(); }
-
 void Controller::handleEvent(sf::Event event)
 {
     if(event.type == sf::Event::Closed)
@@ -31,7 +17,7 @@ void Controller::handleEvent(sf::Event event)
         handleTextEntered(event);
 
     else if(event.type == sf::Event::Resized)
-        handleResize(event);
+        handleResize();
 
     else if(event.type == sf::Event::KeyPressed)
         handleKeyPress(event);
@@ -53,7 +39,36 @@ void Controller::handleClose()
     notifyViewer();
 }
 
-void Controller::handleResize(sf::Event event)
+void Controller::processCommand()
+{
+    // split the command into words
+    msg_.clear();
+    std::stringstream ss(command_);
+    std::string s;
+    while(std::getline(ss, s, ' '))  //
+        msg_.push_back(s);
+    command_ = "";
+
+    // take the action
+    if(msg_[0] == "ADD" || msg_[0] == "DEL")
+    {
+        if(msg_.size() <= 1 || !isNumeric(msg_[1]))
+        {
+            msg_[0] = "ERROR";
+            msg_.push_back("Enter a number!");
+        }
+        else
+            notifyModel();
+    }
+
+    else
+    {
+        msg_[0] = "ERROR";
+        msg_.push_back("Wrong command!");
+    }
+}
+
+void Controller::handleResize()
 {
     setMsgCommand("RESIZE");
     notifyViewer();
@@ -95,33 +110,18 @@ void Controller::handleTextEntered(sf::Event event)
     }
 }
 
-void Controller::processCommand()
+void Controller::notifyModel()
 {
-    // split the command into words
-    msg_.clear();
-    std::stringstream ss(command_);
-    std::string s;
-    while(std::getline(ss, s, ' '))  //
-        msg_.push_back(s);
-    command_ = "";
-
-    // take the action
-    if(msg_[0] == "ADD" || msg_[0] == "DEL")
+    if(!msg_.empty())
     {
-        if(msg_.size() <= 1 || !isNumeric(msg_[1]))
-        {
-            msg_[0] = "ERROR";
-            msg_.push_back("Enter a number!");
-        }
-        else
-            notifyModel();
-    }
+        if(msg_[0] == "ADD")
+            tree_->insert(toInt(msg_[1]));
 
-    else
-    {
-        msg_[0] = "ERROR";
-        msg_.push_back("Wrong command!");
+        else if(msg_[0] == "DEL")
+            tree_->remove(toInt(msg_[1]));
     }
 }
+
+void Controller::notifyViewer() { out_.notify(); }
 
 }  // namespace Project

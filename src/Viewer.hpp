@@ -18,19 +18,18 @@ class Viewer
     Viewer();
     ~Viewer();
 
-    sf::RenderWindow* window_;
+    bool isOpen();
+    bool pollEvent(sf::Event& event);
 
     Observer<Node*>* modelPort() { return &inModel_; }
     Observer<vector<string>>* controllerPort() { return &inController_; }
 
    private:
-    int x_, y_;
-    sf::Font font_;
-
     // misc
     void updateFrame(Node* root);
     void handleResize(Node* root);
     void setText(string command);
+    void setupWindow();
 
     // frame buffers
     void drawBuffers();
@@ -41,7 +40,6 @@ class Viewer
     std::vector<sf::Text> interfaceBuffer_;
 
     // rendering functions
-    void setupWindow();
     sf::CircleShape createCircle(int radius, int xNew, int yNew);
     sf::VertexArray createLinks(int x, int y, int xNew, int yNew, int position);
     sf::Text createKey(Node* root, int xNew, int yNew, int radius);
@@ -63,6 +61,10 @@ class Viewer
             [this](vector<string> v) { onNotifyController(v); },  //
             [this](vector<string> v) { onNotifyController(v); },  //
             [this](vector<string> v) { ; });                      //
+
+    int x_, y_;
+    sf::Font font_;
+    sf::RenderWindow* window_;
 };
 
 }  // namespace Project

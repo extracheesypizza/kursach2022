@@ -4,12 +4,7 @@
 
 namespace Project
 {
-Viewer::Viewer()
-{
-    // [!] SFML requires the window to be a pointer, thus I'm using "new"
-    window_ = new sf::RenderWindow(sf::VideoMode(800, 600), "AVL-Tree");
-    setupWindow();
-}
+Viewer::Viewer() : window_(new sf::RenderWindow(sf::VideoMode(800, 600), "AVL-Tree")) { setupWindow(); }
 
 Viewer::~Viewer()
 {
@@ -18,6 +13,66 @@ Viewer::~Viewer()
     inController_.unsubscribe();
     clearBuffers();
     interfaceBuffer_.clear();
+}
+
+bool Viewer::isOpen() { return window_->isOpen(); }
+
+bool Viewer::pollEvent(sf::Event& event) { return window_->pollEvent(event); }
+
+void Viewer::updateFrame(Node* root)
+{
+    if(root)
+    {
+        int heightLevels = root->height;
+
+        // find width
+        int widthLevels = pow(2, root->height);
+
+        int nodeRadius = 25;
+        int spacer = 10;
+
+        int centreX = window_->getSize().x / 2.f;
+        int centreY = window_->getSize().y / 2.f;
+
+        resizeNodes(spacer, nodeRadius, widthLevels, heightLevels);
+
+        clearBuffers();
+
+        int firstLayer = (centreY * 2 / 3) + (-1 * (heightLevels / 2) * (nodeRadius / 2 + spacer));
+
+        nodeDrawer(root, centreX, firstLayer, nodeRadius, spacer, 2, 2, widthLevels);
+    }
+
+    else
+        clearBuffers();
+
+    drawBuffers();
+    window_->display();
+}
+
+void Viewer::handleResize(Node* root)
+{
+    // update the view to the new size of the window and keep the center
+    sf::Vector2u windowSize;
+    windowSize.x = window_->getSize().x;
+    windowSize.y = window_->getSize().y;
+
+    // cout << window_->getSize().x << endl;
+
+    if(windowSize.x < 500)
+        windowSize.x = 500;
+
+    if(windowSize.y < 500)
+        windowSize.y = 500;
+
+    window_->setSize(windowSize);
+    window_->setView(sf::View(sf::FloatRect(0, 0, windowSize.x, windowSize.y)));
+
+    x_ = window_->getSize().x;
+    y_ = window_->getSize().y;
+
+    drawBuffers();
+    window_->display();
 }
 
 void Viewer::setText(std::string command)
@@ -60,14 +115,6 @@ void Viewer::setupWindow()
     window_->setFramerateLimit(30);
 }
 
-void Viewer::clearBuffers()
-{
-    nodeBuffer_.clear();
-    linesBuffer_.clear();
-    textBuffer_.clear();
-    setText("");
-}
-
 void Viewer::drawBuffers()
 {
     window_->clear(sf::Color::White);
@@ -85,19 +132,12 @@ void Viewer::drawBuffers()
         window_->draw(interfaceBuffer_[i]);
 }
 
-void Viewer::getPosition(int& xNew, int& yNew, int x, int y, int radius, int spacer, int widthLevels, int level, int position)
+void Viewer::clearBuffers()
 {
-    if(position == 0)  // left child
-    {
-        xNew = x - (widthLevels / level) * (radius + spacer);
-        yNew = y + spacer * 4.f + radius * 2.f;
-    }
-
-    else if(position == 1)  // right child
-    {
-        xNew = x + (widthLevels / level) * (radius + spacer);
-        yNew = y + spacer * 4.f + radius * 2.f;
-    }
+    nodeBuffer_.clear();
+    linesBuffer_.clear();
+    textBuffer_.clear();
+    setText("");
 }
 
 sf::CircleShape Viewer::createCircle(int radius, int xNew, int yNew)
@@ -164,6 +204,21 @@ void Viewer::nodeDrawer(Node* root, int x, int y, int radius, int spacer, int le
     }
 }
 
+void Viewer::getPosition(int& xNew, int& yNew, int x, int y, int radius, int spacer, int widthLevels, int level, int position)
+{
+    if(position == 0)  // left child
+    {
+        xNew = x - (widthLevels / level) * (radius + spacer);
+        yNew = y + spacer * 4.f + radius * 2.f;
+    }
+
+    else if(position == 1)  // right child
+    {
+        xNew = x + (widthLevels / level) * (radius + spacer);
+        yNew = y + spacer * 4.f + radius * 2.f;
+    }
+}
+
 void Viewer::resizeNodes(int& spacer, int& radius, int widthLevels, int heightLevels)
 {
     // Firstly, try to resize the spacers
@@ -183,62 +238,6 @@ void Viewer::resizeNodes(int& spacer, int& radius, int widthLevels, int heightLe
         else
             return;
     }
-}
-
-void Viewer::updateFrame(Node* root)
-{
-    if(root)
-    {
-        int heightLevels = root->height;
-
-        // find width
-        int widthLevels = pow(2, root->height);
-
-        int nodeRadius = 25;
-        int spacer = 10;
-
-        int centreX = window_->getSize().x / 2.f;
-        int centreY = window_->getSize().y / 2.f;
-
-        resizeNodes(spacer, nodeRadius, widthLevels, heightLevels);
-
-        clearBuffers();
-
-        int firstLayer = (centreY * 2 / 3) + (-1 * (heightLevels / 2) * (nodeRadius / 2 + spacer));
-
-        nodeDrawer(root, centreX, firstLayer, nodeRadius, spacer, 2, 2, widthLevels);
-    }
-
-    else
-        clearBuffers();
-
-    drawBuffers();
-    window_->display();
-}
-
-void Viewer::handleResize(Node* root)
-{
-    // update the view to the new size of the window and keep the center
-    sf::Vector2u windowSize;
-    windowSize.x = window_->getSize().x;
-    windowSize.y = window_->getSize().y;
-
-    // cout << window_->getSize().x << endl;
-
-    if(windowSize.x < 500)
-        windowSize.x = 500;
-
-    if(windowSize.y < 500)
-        windowSize.y = 500;
-
-    window_->setSize(windowSize);
-    window_->setView(sf::View(sf::FloatRect(0, 0, windowSize.x, windowSize.y)));
-
-    x_ = window_->getSize().x;
-    y_ = window_->getSize().y;
-
-    drawBuffers();
-    window_->display();
 }
 
 void Viewer::onNotifyModel(Node* n) { updateFrame(n); }

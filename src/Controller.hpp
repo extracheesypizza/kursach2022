@@ -17,10 +17,6 @@ class Controller
     void subscribe(Observer<vector<string>>* obs) { out_.subscribe(obs); }
 
    private:
-    std::string command_;
-    std::vector<std::string> msg_;
-    AVLTree* tree_;
-
     // Utility
     void setMsgCommand(std::string s);
 
@@ -28,11 +24,17 @@ class Controller
     Observable<vector<string>> out_ = [this]() { return msg_; };
     void handleClose();
     void processCommand();
-    void handleResize(sf::Event event);
+    void handleResize();
     void handleKeyPress(sf::Event event);
     void handleTextEntered(sf::Event event);
+
+    // Observer
     void notifyModel();
     void notifyViewer();
+
+    std::string command_;
+    std::vector<std::string> msg_;
+    AVLTree* tree_;
 };
 
 }  // namespace Project

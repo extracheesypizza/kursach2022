@@ -28,23 +28,26 @@ class AVLTree
     void subscribe(Observer<Node*>* obs) { out_.subscribe(obs); }
 
    private:
-    Node* root_;
+    Node* insert(Node* node, int key);
+    Node* remove(Node* node, int key);
 
-    void clear(Node* root);
-    int balanceFactor(Node* cur) const;
-    Node* returnRoot() const { return root_; }
+    Node* balanceIfNeeded(Node* node);
 
     Node* rightRotate(Node* y);
     Node* leftRotate(Node* x);
 
-    Node* balanceIfNeeded(Node* node);
+    int balanceFactor(Node* cur) const;
+    int maxHeight(Node* left, Node* right);
+    Node* minVal(Node* root);
+    void clear(Node* root);
 
-    Node* insert(Node* node, int key);
-    Node* remove(Node* node, int key);
+    Node* returnRoot() const { return root_; }
 
     // Observer
     Observable<Node*> out_ = [this]() { return root_; };
     void notify();
+
+    Node* root_;
 };
 
 }  // namespace Project
