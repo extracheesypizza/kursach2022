@@ -8,10 +8,13 @@ namespace Project
 class Controller
 {
    public:
-    Controller(AVLTree* tree, Observer<vector<string>>* obs) : command_(""), tree_(tree) { out_.subscribe(obs); };
+    Controller(AVLTree* tree) : command_(""), tree_(tree){};
     ~Controller();
 
     void handleEvent(sf::Event event);
+
+    // Observer
+    void subscribe(Observer<vector<string>>* obs) { out_.subscribe(obs); }
 
    private:
     std::string command_;

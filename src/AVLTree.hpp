@@ -12,7 +12,7 @@ namespace Project
 class AVLTree
 {
    public:
-    AVLTree(Observer<Node*>* obs) : root_(nullptr) { out_.subscribe(obs); };
+    AVLTree() : root_(nullptr){};
     ~AVLTree();
 
     AVLTree(const AVLTree&) = delete;

@@ -8,7 +8,7 @@ Viewer::Viewer()
 {
     // [!] SFML requires the window to be a pointer, thus I'm using "new"
     window_ = new sf::RenderWindow(sf::VideoMode(800, 600), "AVL-Tree");
-    setupTheWindow();
+    setupWindow();
 }
 
 Viewer::~Viewer()
@@ -47,7 +47,7 @@ void Viewer::setText(std::string command)
     window_->display();
 }
 
-void Viewer::setupTheWindow()
+void Viewer::setupWindow()
 {
     if(!font_.loadFromFile("arial.ttf"))
     {

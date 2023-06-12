@@ -6,7 +6,6 @@ Controller::~Controller()
 {
     command_.clear();
     msg_.clear();
-    delete tree_;
 }
 
 void Controller::notifyModel()
@@ -57,8 +56,6 @@ void Controller::handleClose()
 void Controller::handleResize(sf::Event event)
 {
     setMsgCommand("RESIZE");
-    msg_.push_back(std::to_string(event.size.width));
-    msg_.push_back(std::to_string(event.size.height));
     notifyViewer();
 }
 

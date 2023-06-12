@@ -4,7 +4,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "Functions.hpp"
-#include "Node.hpp"
 #include "Observer.hpp"
 
 using std::pair;
@@ -24,14 +23,14 @@ class Viewer
     Observer<Node*>* modelPort() { return &inModel_; }
     Observer<vector<string>>* controllerPort() { return &inController_; }
 
-    void setupTheWindow();
-    void updateFrame(Node* root);
-    void handleResize(Node* root);
-    void setText(string command);
-
    private:
     int x_, y_;
     sf::Font font_;
+
+    // misc
+    void updateFrame(Node* root);
+    void handleResize(Node* root);
+    void setText(string command);
 
     // frame buffers
     void drawBuffers();
@@ -42,6 +41,7 @@ class Viewer
     std::vector<sf::Text> interfaceBuffer_;
 
     // rendering functions
+    void setupWindow();
     sf::CircleShape createCircle(int radius, int xNew, int yNew);
     sf::VertexArray createLinks(int x, int y, int xNew, int yNew, int position);
     sf::Text createKey(Node* root, int xNew, int yNew, int radius);
