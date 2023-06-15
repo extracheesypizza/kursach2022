@@ -6,14 +6,7 @@ namespace Project
 {
 Viewer::Viewer() : window_(new sf::RenderWindow(sf::VideoMode(800, 600), "AVL-Tree")) { setupWindow(); }
 
-Viewer::~Viewer()
-{
-    delete window_;
-    inModel_.unsubscribe();
-    inController_.unsubscribe();
-    clearBuffers();
-    interfaceBuffer_.clear();
-}
+Viewer::~Viewer() { delete window_; }
 
 bool Viewer::isOpen() { return window_->isOpen(); }
 
